@@ -8,6 +8,7 @@ from utils import use_cuda, resume_checkpoint
 class NeuMF(torch.nn.Module):
     def __init__(self, config):
         super(NeuMF, self).__init__()
+
         self.config = config
         self.num_users = config['num_users']
         self.num_items = config['num_items']
@@ -22,11 +23,13 @@ class NeuMF(torch.nn.Module):
         self.fc_layers = torch.nn.ModuleList()
         for idx, (in_size, out_size) in enumerate(zip(config['layers'][:-1], config['layers'][1:])):
             self.fc_layers.append(torch.nn.Linear(in_size, out_size))
+            self.fc_layers.append(torch.nn.Dropout(0.1))
+            self.fc_layers.append(torch.nn.ReLU())
 
         self.affine_output = torch.nn.Linear(in_features=config['layers'][-1] + config['latent_dim_mf'], out_features=1)
         self.logistic = torch.nn.Sigmoid()
 
-    def forward(self, user_indices, item_indices):
+    def forward(self, user_indices, item_indices, poster_embeddings=None):
         user_embedding_mlp = self.embedding_user_mlp(user_indices)
         item_embedding_mlp = self.embedding_item_mlp(item_indices)
         user_embedding_mf = self.embedding_user_mf(user_indices)
@@ -37,7 +40,6 @@ class NeuMF(torch.nn.Module):
 
         for idx, _ in enumerate(range(len(self.fc_layers))):
             mlp_vector = self.fc_layers[idx](mlp_vector)
-            mlp_vector = torch.nn.ReLU()(mlp_vector)
 
         vector = torch.cat([mlp_vector, mf_vector], dim=-1)
         logits = self.affine_output(vector)
