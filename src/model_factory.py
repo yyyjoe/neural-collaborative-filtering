@@ -5,8 +5,9 @@ from vneumf import VNeuMFEngine
 import numpy as np
 import os
 from os import path
-gmf_config = {'alias': 'gmf_factor8neg4',
+gmf_config = {'alias': 'gmf_',
               'model': 'gmf',
+              'dropout': 0,
               'num_epoch': 200,
               'batch_size': 1024,
               # 'optimizer': 'sgd',
@@ -27,7 +28,7 @@ gmf_config = {'alias': 'gmf_factor8neg4',
               'device_id': 0,
               'model_dir':'/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
-mlp_config = {'alias': 'mlp_factor8neg4',
+mlp_config = {'alias': 'mlp_',
               'model': 'mlp',
               'dropout': 0.15,
               'num_epoch': 200,
@@ -46,7 +47,7 @@ mlp_config = {'alias': 'mlp_factor8neg4',
               'pretrain_mf': 'checkpoints/gmf/{}'.format('gmf_factor8neg4_Epoch100_HR0.6391_NDCG0.2852.model'),
               'model_dir':'/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
-neumf_config = {'alias': 'neumf_factor8neg4',
+neumf_config = {'alias': 'neumf_',
                 'model': 'neumf',
                 'dropout': 0.15,
                 'num_epoch': 200,
@@ -57,6 +58,7 @@ neumf_config = {'alias': 'neumf_factor8neg4',
                 'num_items': 9724,
                 'latent_dim_mf': 8,
                 'latent_dim_mlp': 8,
+                'latent_dim': 8,
                 'num_negative': 4,
                 'layers': [16,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
                 'l2_regularization': 0,
@@ -69,7 +71,7 @@ neumf_config = {'alias': 'neumf_factor8neg4',
                 }
 
 
-vneumf_config = {'alias': 'vneumf_factor8neg4',
+vneumf_config = {'alias': 'vneumf_',
                 'num_epoch': 200,
                 'dropout': 0.15,
                 'model': 'vneumf',
@@ -81,6 +83,7 @@ vneumf_config = {'alias': 'vneumf_factor8neg4',
                 'latent_dim_mf': 8,
                 'latent_dim_mlp': 8,
                 'latent_dim_v': 8,
+                'latent_dim': 8,
                 'num_negative': 4,
                 'layers': [16,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
                 'layers_v': [16,32,16,8],

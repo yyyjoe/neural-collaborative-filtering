@@ -26,7 +26,7 @@ class Engine(object):
         self.now = datetime.now()
         self.date_time = self.now.strftime("%m%d_%H%M%S")
 
-        self.save_dir='checkpoints/' + config['model'] +'/' + self.date_time
+        self.save_dir='checkpoints/' + config['model'] +'/drop' + str(config['dropout']) + '_dim' + str(config['latent_dim']) + '_neg' + str(config['num_negative']) + '_lr' + config['adam_lr']
         if not os.path.exists(self.save_dir):
             os.mkdir(self.save_dir)
 
@@ -48,8 +48,10 @@ class Engine(object):
     def train_an_epoch(self, train_loader, epoch_id):
         assert hasattr(self, 'model'), 'Please specify the exact model !'
         self.model.train()
-        total_loss = 0
+        total_loss = 0.
+        count=0
         for batch_id, batch in enumerate(train_loader):
+            count+=1
             assert isinstance(batch[0], torch.LongTensor)
             user, item, rating, poster_embedding = batch[0], batch[1], batch[2], batch[3]
             rating = rating.float()
@@ -58,6 +60,7 @@ class Engine(object):
                 print('[Training Epoch {}] Batch {}, Loss {}'.format(epoch_id, batch_id, loss))
             total_loss += loss
         self._writer.add_scalar('model/loss', total_loss, epoch_id)
+        return total_loss/count,self.save_dir
 
     def evaluate(self, evaluate_data, epoch_id):
         assert hasattr(self, 'model'), 'Please specify the exact model !'

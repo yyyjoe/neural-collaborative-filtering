@@ -35,14 +35,17 @@ evaluate_data = sample_generator.evaluate_data
 
 # Specify the exact model
 performance=[]
+total_loss=[]
 for epoch in range(config['num_epoch']):
     print('Epoch {} starts !'.format(epoch))
     print('-' * 80)
     #engine.scheduler.step()
     train_loader = sample_generator.instance_a_train_loader(config['num_negative'], config['batch_size'])
-    engine.train_an_epoch(train_loader, epoch_id=epoch)
+    loss,save_dir = engine.train_an_epoch(train_loader, epoch_id=epoch)
     hit_ratio, ndcg = engine.evaluate(evaluate_data, epoch_id=epoch)
     if(epoch%10==0 or epoch==config['num_epoch']-1):
         engine.save(config['alias'], epoch, hit_ratio, ndcg)
     performance.append([epoch,hit_ratio,ndcg])
-np.save("checkpoints/" + args.model + "/" + args.model +"_performance.npy",np.array(performance))  
+    total_loss.append([epoch,loss])
+np.save(save_dir + "/" + args.model +"_loss.npy",np.array(total_loss))
+np.save(save_dir + "/" + args.model +"_accuracy.npy",np.array(performance))
