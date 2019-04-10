@@ -43,7 +43,7 @@ mlp_config = {'alias': 'mlp_',
               'l2_regularization': 0.0000001,  # MLP model is sensitive to hyper params
               'use_cuda': True,
               'device_id': 1,
-              'pretrain': True,
+              'pretrain': False,
               'pretrain_mf': 'checkpoints/gmf/{}'.format('gmf_factor8neg4_Epoch100_HR0.6391_NDCG0.2852.model'),
               'model_dir':'/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
