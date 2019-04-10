@@ -23,7 +23,7 @@ class NeuMF(torch.nn.Module):
         self.fc_layers = torch.nn.ModuleList()
         for idx, (in_size, out_size) in enumerate(zip(config['layers'][:-1], config['layers'][1:])):
             self.fc_layers.append(torch.nn.Linear(in_size, out_size))
-            self.fc_layers.append(torch.nn.Dropout(0.1))
+            self.fc_layers.append(torch.nn.Dropout(config['dropout']))
             self.fc_layers.append(torch.nn.ReLU())
 
         self.affine_output = torch.nn.Linear(in_features=config['layers'][-1] + config['latent_dim_mf'], out_features=1)
