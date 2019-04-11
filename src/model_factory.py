@@ -1,4 +1,5 @@
 from gmf import GMFEngine
+from vgmf import VGMFEngine
 from mlp import MLPEngine
 from neumf import NeuMFEngine
 from vneumf import VNeuMFEngine
@@ -10,13 +11,6 @@ gmf_config = {'alias': 'gmf_',
               'dropout': 0,
               'num_epoch': 200,
               'batch_size': 1024,
-              # 'optimizer': 'sgd',
-              # 'sgd_lr': 1e-3,
-              # 'sgd_momentum': 0.9,
-              # 'optimizer': 'rmsprop',
-              # 'rmsprop_lr': 1e-3,
-              # 'rmsprop_alpha': 0.99,
-              # 'rmsprop_momentum': 0,
               'optimizer': 'adam',
               'adam_lr': 1e-3,
               'num_users': 610,
@@ -27,6 +21,24 @@ gmf_config = {'alias': 'gmf_',
               'use_cuda': True,
               'device_id': 0,
               'model_dir':'/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
+
+vgmf_config = {'alias': 'vgmf_',
+              'model': 'vgmf',
+              'dropout': 0,
+              'num_epoch': 200,
+              'batch_size': 1024,
+              'optimizer': 'adam',
+              'adam_lr': 1e-3,
+              'num_users': 610,
+              'num_items': 9724,
+              'latent_dim': 8,
+              'latent_dim_v': 8,
+              'num_negative': 4,
+              'l2_regularization': 0, # 0.01
+              'use_cuda': True,
+              'device_id': 0,
+              'model_dir':'/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
+
 
 mlp_config = {'alias': 'mlp_',
               'model': 'mlp',

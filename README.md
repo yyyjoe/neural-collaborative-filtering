@@ -1,12 +1,12 @@
-# neural-collaborative-filtering
-Neural collaborative filtering(NCF), is a deep learning based framework for making recommendations. The key idea is to learn the user-item interaction using neural networks. Check the follwing paper for details about NCF.
+# Using Movie Posters in Movie Recommender System
+Movie posters signal the style and content of the films. By including the visual information, the movie recommend system can better filter preferences according to user's choices. A deep learning recommend system, Neural collaborative filtering(NCF), obtain a great performance by learning the user-item embedding using neural networks.
 
-> He, Xiangnan, et al. "Neural collaborative filtering." Proceedings of the 26th International Conference on World Wide Web. International World Wide Web Conferences Steering Committee, 2017.
+The authors of NCF published [a nice implementation](https://githubcom/hexiangnan/neural_collaborative_filtering) written in tensorflow(keras), and [LaceyChen17](https://githubcom/LaceyChen17/neural-collaborative-filtering) provides the implementation written in **pytorch**. This repo extend Neural collaborative filtering by learning the user-poster embedding features. (based on [LaceyChen17's code](https://githubcom/LaceyChen17/neural-collaborative-filtering)).
 
-The authors of NCF actually published [a nice implementation](https://github.com/hexiangnan/neural_collaborative_filtering) written in tensorflow(keras). This repo instead provides my implementation written in **pytorch**. I hope it would be helpful to pytorch fans. Have fun playing with it !
+
 
 ## Dataset
-[The Movielens 1M Dataset](http://grouplens.org/datasets/movielens/1m/) is used to test the repo.
+[The Movielens Latest Datasets](https://grouplens.org/datasets/movielens/latest/) is used to test the repo.
 
 ## Files
 

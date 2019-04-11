@@ -26,7 +26,7 @@ class Engine(object):
         self.now = datetime.now()
         self.date_time = self.now.strftime("%m%d_%H%M%S")
 
-        self.save_dir='checkpoints/' + config['model'] +'/drop' + str(config['dropout']) + '_dim' + str(config['latent_dim']) + '_neg' + str(config['num_negative']) + '_lr' + str(config['adam_lr'])
+        self.save_dir='checkpoints/' + config['model'] +'/drop' + str(config['dropout']) + '_dim' + str(config['latent_dim']) + '_neg' + str(config['num_negative']) + '_lr' + str(config['adam_lr']) + '_' + str(config['alias'])
         if not os.path.exists(self.save_dir):
             os.mkdir(self.save_dir)
 

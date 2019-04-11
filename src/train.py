@@ -6,7 +6,7 @@ from argparse import ArgumentParser
 import os
 from os import path
 parser = ArgumentParser()
-parser.add_argument('--model', type=str, default="gmf",choices=["gmf","mlp","neumf","vneumf"], dest="model")
+parser.add_argument('--model', type=str, default="gmf",choices=["gmf","vgmf","mlp","neumf","vneumf"], dest="model")
 args = parser.parse_args()
 
 if not os.path.exists('checkpoints'):

@@ -65,8 +65,8 @@ class SampleGenerator(object):
     def _split_loo(self, ratings):
         """leave one out train/test split """
         ratings['rank_latest'] = ratings.groupby(['userId'])['timestamp'].rank(method='first', ascending=False)
-        test = ratings[ratings['rank_latest'] == 2]
-        train = ratings[ratings['rank_latest'] != 2]
+        test = ratings[ratings['rank_latest'] == 1]
+        train = ratings[ratings['rank_latest'] > 1]
         assert train['userId'].nunique() == test['userId'].nunique()
         print("Number of Training Data:  %d"%len(train))
         print("Number of Testing  Data:  %d"%len(test))
