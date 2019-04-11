@@ -3,7 +3,7 @@ from gmf import GMF
 from mlp import MLP
 from engine import Engine
 from utils import use_cuda, resume_checkpoint
-
+import torch.nn.functional as F
 class VNeuMF(torch.nn.Module):
     def __init__(self, config):
         super(VNeuMF, self).__init__()
@@ -21,8 +21,9 @@ class VNeuMF(torch.nn.Module):
         self.embedding_item_mf = torch.nn.Embedding(num_embeddings=self.num_items, embedding_dim=self.latent_dim_mf)
 
         if(self.config['isAtten']):
-            self.atten = torch.nn.Embedding(num_embeddings=self.num_users, embedding_dim=3)
-            self.softmax = torch.nn.Softmax()
+            self.embedding_atten = torch.nn.Embedding(num_embeddings=self.num_users, embedding_dim=self.latent_dim_v)
+            self.fc_atten = torch.nn.Linear(in_features=self.latent_dim_v, out_features=3)
+            self.sigmoid = torch.nn.Sigmoid()
 
         self.embedding_user_v  = torch.nn.Embedding(num_embeddings=self.num_users, embedding_dim=self.latent_dim_v)
         self.fc_embedding = torch.nn.ModuleList()
@@ -46,7 +47,7 @@ class VNeuMF(torch.nn.Module):
         self.logistic = torch.nn.Sigmoid()
 
     def forward(self, user_indices, item_indices, poster_embeddings):
-        ###
+        #
         user_embedding_mf = self.embedding_user_mf(user_indices)
         item_embedding_mf = self.embedding_item_mf(item_indices)
 
@@ -58,7 +59,7 @@ class VNeuMF(torch.nn.Module):
             poster_embeddings = self.fc_embedding[idx](poster_embeddings)
         item_embedding_v  = poster_embeddings
 
-        #####
+        ##
         mf_vector =torch.mul(user_embedding_mf, item_embedding_mf)
 
         mlp_vector = torch.cat([user_embedding_mlp, item_embedding_mlp], dim=-1)  # the concat latent vector
@@ -70,8 +71,8 @@ class VNeuMF(torch.nn.Module):
             v_vector = self.fc_layers_v[idx](v_vector)
 
         if(self.config['isAtten']):
-            atten_map = self.atten(user_indices)
-            atten_map = self.softmax(atten_map)
+            atten_map = self.fc_atten(F.relu(self.embedding_atten(user_indices)))
+            atten_map = F.sigmoid(atten_map)
             mlp_vector = mlp_vector*atten_map[:,0,None]
             mf_vector = mf_vector*atten_map[:,1,None]
             v_vector = v_vector*atten_map[:,2,None]

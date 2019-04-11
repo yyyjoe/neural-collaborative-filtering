@@ -6,10 +6,10 @@ from vneumf import VNeuMFEngine
 import numpy as np
 import os
 from os import path
-gmf_config = {'alias': 'gmf_',
+gmf_config = {'alias': '',
               'model': 'gmf',
               'dropout': 0,
-              'num_epoch': 200,
+              'num_epoch': 250,
               'batch_size': 1024,
               'optimizer': 'adam',
               'adam_lr': 1e-3,
@@ -22,10 +22,10 @@ gmf_config = {'alias': 'gmf_',
               'device_id': 0,
               'model_dir':'/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
-vgmf_config = {'alias': 'vgmf_',
+vgmf_config = {'alias': '',
               'model': 'vgmf',
               'dropout': 0,
-              'num_epoch': 200,
+              'num_epoch': 250,
               'batch_size': 1024,
               'optimizer': 'adam',
               'adam_lr': 1e-3,
@@ -40,10 +40,10 @@ vgmf_config = {'alias': 'vgmf_',
               'model_dir':'/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 
-mlp_config = {'alias': 'mlp_',
+mlp_config = {'alias': '',
               'model': 'mlp',
-              'dropout': 0.15,
-              'num_epoch': 200,
+              'dropout': 0.1,
+              'num_epoch': 250,
               'batch_size': 1024,  # 1024,
               'optimizer': 'adam',
               'adam_lr': 1e-3,
@@ -59,10 +59,10 @@ mlp_config = {'alias': 'mlp_',
               'pretrain_mf': 'checkpoints/gmf/{}'.format('gmf_factor8neg4_Epoch100_HR0.6391_NDCG0.2852.model'),
               'model_dir':'/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
-neumf_config = {'alias': 'neumf_',
+neumf_config = {'alias': '',
                 'model': 'neumf',
-                'dropout': 0.15,
-                'num_epoch': 200,
+                'dropout': 0.1,
+                'num_epoch': 250,
                 'batch_size': 1024,
                 'optimizer': 'adam',
                 'adam_lr': 1e-3,
@@ -83,9 +83,9 @@ neumf_config = {'alias': 'neumf_',
                 }
 
 
-vneumf_config = {'alias': 'vneumf_',
-                'num_epoch': 200,
-                'dropout': 0.15,
+vneumf_config = {'alias': '',
+                'num_epoch': 250,
+                'dropout': 0.1,
                 'model': 'vneumf',
                 'batch_size': 1024,
                 'optimizer': 'adam',
@@ -103,7 +103,7 @@ vneumf_config = {'alias': 'vneumf_',
                 'use_cuda': True,
                 'device_id': 3,
                 'pretrain': False,
-                'isAtten': True,
+                'isAtten': False,
                 'pretrain_mf': 'checkpoints/gmf/{}'.format('gmf_factor8neg4_Epoch100_HR0.6391_NDCG0.2852.model'),
                 'pretrain_mlp': 'checkpoints/mlp/{}'.format('mlp_factor8neg4_Epoch100_HR0.5606_NDCG0.2463.model'),
                 'model_dir':'/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
@@ -114,6 +114,7 @@ engine_map = {
     'mlp': MLPEngine,
     'neumf': NeuMFEngine,
     'vneumf':VNeuMFEngine,
+    'vgmf':VGMFEngine,
 }
 
 config_map = {
@@ -121,6 +122,7 @@ config_map = {
     'mlp': mlp_config,
     'neumf': neumf_config,
     'vneumf': vneumf_config,
+    'vgmf': vgmf_config,
 }
 
 
@@ -129,4 +131,5 @@ def get_config(name):
         raise ValueError('Name of dataset unknown %s' % name)
     if not os.path.exists('checkpoints/'+ name):
         os.mkdir('checkpoints/'+ name)
+    print("Load model " + name)
     return config_map[name],engine_map[name](config_map[name])

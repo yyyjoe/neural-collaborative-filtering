@@ -4,19 +4,18 @@ from mlp import MLP
 from engine import Engine
 from utils import use_cuda, resume_checkpoint
 
-class VGMFngine(torch.nn.Module):
+class VGMF(torch.nn.Module):
     def __init__(self, config):
-        super(VGMFngine, self).__init__()
+        super(VGMF, self).__init__()
 
         self.config = config
         self.num_users = config['num_users']
         self.num_items = config['num_items']
         self.latent_dim_mf = config['latent_dim_mf']
-        self.latent_dim_mlp = config['latent_dim_mlp']
         self.latent_dim_v = config['latent_dim_v']
 
-        self.embedding_user_mlp = torch.nn.Embedding(num_embeddings=self.num_users, embedding_dim=self.latent_dim_mlp)
-        self.embedding_item_mlp = torch.nn.Embedding(num_embeddings=self.num_items, embedding_dim=self.latent_dim_mlp)
+        self.embedding_user_mf = torch.nn.Embedding(num_embeddings=self.num_users, embedding_dim=self.latent_dim_mf)
+        self.embedding_item_mf = torch.nn.Embedding(num_embeddings=self.num_items, embedding_dim=self.latent_dim_mf)
 
 
         self.embedding_user_v  = torch.nn.Embedding(num_embeddings=self.num_users, embedding_dim=self.latent_dim_v)
@@ -26,7 +25,7 @@ class VGMFngine(torch.nn.Module):
         self.fc_embedding.append(torch.nn.ReLU())
         self.fc_embedding.append(torch.nn.Linear(in_features=512, out_features=self.latent_dim_v))
 
-        self.affine_output = torch.nn.Linear(in_features=config['layers'][-1] + config['layers_v'][-1] + config['latent_dim_mf'] , out_features=1)
+        self.affine_output = torch.nn.Linear(in_features=self.latent_dim_mf, out_features=1)
         self.logistic = torch.nn.Sigmoid()
 
     def forward(self, user_indices, item_indices, poster_embeddings):
@@ -35,10 +34,10 @@ class VGMFngine(torch.nn.Module):
         item_embedding_mf = self.embedding_item_mf(item_indices)
 
         user_embedding_v  = self.embedding_user_v(user_indices)
-
         for idx, _ in enumerate(range(len(self.fc_embedding))):
             poster_embeddings = self.fc_embedding[idx](poster_embeddings)
         item_embedding_v  = poster_embeddings
+
 
         mf_vector =torch.mul(user_embedding_mf, item_embedding_mf)
         v_vector = torch.mul(user_embedding_v, item_embedding_v)
@@ -78,14 +77,14 @@ class VGMFngine(torch.nn.Module):
         self.affine_output.bias.data = 0.5 * (mlp_model.affine_output.bias.data + gmf_model.affine_output.bias.data)
 
 
-class VGMFngine(Engine):
+class VGMFEngine(Engine):
     """Engine for training & evaluating GMF model"""
     def __init__(self, config):
-        self.model = VGMFngine(config)
+        self.model = VGMF(config)
         if config['use_cuda'] is True:
             use_cuda(True, config['device_id'])
             self.model.cuda()
-        super(VGMFngine, self).__init__(config)
+        super(VGMFEngine, self).__init__(config)
         print(self.model)
 
         if config['pretrain']:

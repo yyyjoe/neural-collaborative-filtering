@@ -39,4 +39,3 @@ if __name__ == "__main__":
         zip_dir = zf.namelist()[0]
         zf.extractall('./data/')
     os.remove(destination)
-    os.remove('./data/_MACOSX')

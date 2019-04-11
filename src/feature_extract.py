@@ -118,5 +118,5 @@ embedding=[]
 for batch_id, batch in enumerate(train_loader):
     imgs = batch.cuda()
     embedding_pred = model(imgs)
-    embedding.append(embedding_pred)
+    embedding.append(embedding_pred.cpu().numpy())
 np.save('./embedding.npy',embedding)
