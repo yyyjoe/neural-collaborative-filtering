@@ -62,7 +62,7 @@ class SampleGenerator(object):
         ratings['rating'][ratings['rating'] > 0] = 1.0
         return ratings
 
-    def _split_loo2(self, ratings):
+    def _split_loo(self, ratings):
         """leave one out train/test split """
         ratings['rank_latest'] = ratings.groupby(['userId'])['timestamp'].rank(method='first', ascending=False)
         test = ratings[ratings['rank_latest'] == 1]
@@ -72,17 +72,6 @@ class SampleGenerator(object):
         print("Number of Testing  Data:  %d"%len(test))
         return train[['userId', 'itemId', 'rating']], test[['userId', 'itemId', 'rating']]
     
-    def _split_loo(self, ratings):
-        """leave one out train/test split """
-        
-        ratings['rank_latest'] = ratings.groupby(['userId'])['timestamp'].rank(method='first', ascending=False)
-        ratings['test']=ratings.groupby(['userId'])['rank_latest'].transform(max)
-        test = ratings[ratings['rank_latest']  <=ratings['test']*0.01]
-        train = ratings[ratings['rank_latest'] > ratings['test']*0.01]
-        assert train['userId'].nunique() == test['userId'].nunique()
-        print("Number of Training Data:  %d"%len(train))
-        print("Number of Testing  Data:  %d"%len(test))
-        return train[['userId', 'itemId', 'rating']], test[['userId', 'itemId', 'rating']]
 
     def _sample_negative(self, ratings):
         """return all negative items & 100 sampled negative items"""

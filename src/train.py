@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from data import SampleGenerator
-import model_factory
+import config_factory
 from argparse import ArgumentParser
 import os
 from os import path
@@ -12,11 +12,11 @@ args = parser.parse_args()
 if not os.path.exists('checkpoints'):
     os.mkdir('checkpoints')
 
-config,engine = model_factory.get_config(args.model)
+config,engine = config_factory.get_config(args.model)
 
 # Load Data
-ml1m_dir = 'data/updated_ratings.csv'
-ml1m_rating = pd.read_csv(ml1m_dir, sep=',', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
+ml1m_dir = 'data/ml-1m/ratings.dat'
+ml1m_rating = pd.read_csv(ml1m_dir, sep='::', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
 # Reindex
 user_id = ml1m_rating[['uid']].drop_duplicates().reindex()
 user_id['userId'] = np.arange(len(user_id))

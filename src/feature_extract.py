@@ -32,6 +32,7 @@ class SampleGenerator(object):
     def __init__(self,ratings,poster_dict):
         self.poster_dict=poster_dict
         self.ratings=ratings
+        self.img_path="./data/posterImages/"
         self.transform_train = transforms.Compose([
                                                     transforms.Resize((224, 224)),
                                                     transforms.ToTensor(), 
@@ -44,7 +45,7 @@ class SampleGenerator(object):
         """instance train loader for one training epoch"""
         train=[]
         for item_id,movie_id in self.poster_dict.items():
-            img_path = "/home/tingkuei/min/movieRecommender/ml-latest-small/movie_project/posterImage/" + str(movie_id) + ".jpg"
+            img_path = self.img_path + str(movie_id) + ".jpg"
             train.append(img_path)
             
         trainloader = DataLoader(
@@ -89,8 +90,8 @@ def read_image(img_path):
 
 
 # Load Data
-ml1m_dir = 'data/updated_ratings.csv'
-ml1m_rating = pd.read_csv(ml1m_dir, sep=',', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
+ml1m_dir = 'data/ml-1m/ratings.dat'
+ml1m_rating = pd.read_csv(ml1m_dir, sep='::', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
 # Reindex
 print(ml1m_rating)
 user_id = ml1m_rating[['uid']].drop_duplicates().reindex()
@@ -119,4 +120,4 @@ for batch_id, batch in enumerate(train_loader):
     imgs = batch.cuda()
     embedding_pred = model(imgs)
     embedding.append(embedding_pred.cpu().numpy())
-np.save('./embedding.npy',embedding)
+np.save('./data/ml1m_embeddings.npy',np.array(embedding))
