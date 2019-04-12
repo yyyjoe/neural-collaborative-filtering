@@ -32,8 +32,9 @@ def save_response_content(response, destination):
 
 if __name__ == "__main__":
 
-    file_id = '1OpI1gUVcP02G5wI_ERuJBL5MRFTJ85qU'
-    destination = './data/images.zip'
+    #file_id = '1OpI1gUVcP02G5wI_ERuJBL5MRFTJ85qU' # poster images
+    file_id = '1DxSmiplTMQVTGNcWpeoRQ8_BUZBQDmFS'
+    destination = './data/ml1m_embeddings.zip'
     download_file_from_google_drive(file_id, destination)
     with zipfile.ZipFile(destination) as zf:
         zip_dir = zf.namelist()[0]

@@ -37,7 +37,7 @@ class SampleGenerator(object):
         assert 'userId' in ratings.columns
         assert 'itemId' in ratings.columns
         assert 'rating' in ratings.columns
-        poster_embedding_path="./data/embedding.npy"
+        poster_embedding_path="./data/ml1m_embeddings.npy"
         self.poster_embeddings=np.load(poster_embedding_path)
         self.ratings = ratings
         # explicit feedback using _normalize and implicit using _binarize

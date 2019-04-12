@@ -27,9 +27,9 @@ class VNeuMF(torch.nn.Module):
 
         self.embedding_user_v  = torch.nn.Embedding(num_embeddings=self.num_users, embedding_dim=self.latent_dim_v)
         self.fc_embedding = torch.nn.ModuleList()
-        self.fc_embedding.append(torch.nn.Linear(in_features=2048, out_features=512))
+        self.fc_embedding.append(torch.nn.Linear(in_features=2048, out_features=128))
         self.fc_embedding.append(torch.nn.ReLU())
-        self.fc_embedding.append(torch.nn.Linear(in_features=512, out_features=self.latent_dim_v))
+        self.fc_embedding.append(torch.nn.Linear(in_features=128, out_features=self.latent_dim_v))
 
         self.fc_layers = torch.nn.ModuleList()
         for idx, (in_size, out_size) in enumerate(zip(config['layers'][:-1], config['layers'][1:])):

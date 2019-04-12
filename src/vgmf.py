@@ -21,9 +21,9 @@ class VGMF(torch.nn.Module):
         self.embedding_user_v  = torch.nn.Embedding(num_embeddings=self.num_users, embedding_dim=self.latent_dim_v)
         
         self.fc_embedding = torch.nn.ModuleList()
-        self.fc_embedding.append(torch.nn.Linear(in_features=2048, out_features=64))
+        self.fc_embedding.append(torch.nn.Linear(in_features=2048, out_features=128))
         self.fc_embedding.append(torch.nn.ReLU())
-        self.fc_embedding.append(torch.nn.Linear(in_features=64, out_features=self.latent_dim_v))
+        self.fc_embedding.append(torch.nn.Linear(in_features=128, out_features=self.latent_dim_v))
 
         self.affine_output = torch.nn.Linear(in_features=self.latent_dim_mf, out_features=1)
         self.logistic = torch.nn.Sigmoid()
