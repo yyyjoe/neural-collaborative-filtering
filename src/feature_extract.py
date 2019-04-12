@@ -14,15 +14,15 @@ class NeuMF(torch.nn.Module):
     def __init__(self):
         # Poster Feature
         super(NeuMF, self).__init__()
-        resnet50 = models.resnet152(pretrained=True)
-        modules = list(resnet50.children())[:-1]
-        resnet50 =torch.nn.Sequential(*modules)
-        for p in resnet50.parameters():
+        resnet152 = models.resnet152(pretrained=True)
+        modules = list(resnet152.children())[:-1]
+        resnet152 =torch.nn.Sequential(*modules)
+        for p in resnet152.parameters():
             p.requires_grad = False
-        self.resnet50=resnet50
+        self.resnet152=resnet152
 
     def forward(self, img):
-        item_embedding_v = torch.squeeze(self.resnet50(img))
+        item_embedding_v = torch.squeeze(self.resnet152(img))
 
         return item_embedding_v
     
@@ -117,6 +117,8 @@ model.cuda()
 
 embedding=[]
 for batch_id, batch in enumerate(train_loader):
+    if(batch_id%500==0):
+        print(batch_id)
     imgs = batch.cuda()
     embedding_pred = model(imgs)
     embedding.append(embedding_pred.cpu().numpy())

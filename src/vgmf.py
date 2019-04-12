@@ -11,7 +11,7 @@ class VGMF(torch.nn.Module):
         self.config = config
         self.num_users = config['num_users']
         self.num_items = config['num_items']
-        self.latent_dim_mf = config['latent_dim_mf']
+        self.latent_dim_mf = config['latent_dim']
         self.latent_dim_v = config['latent_dim_v']
 
         self.embedding_user_mf = torch.nn.Embedding(num_embeddings=self.num_users, embedding_dim=self.latent_dim_mf)

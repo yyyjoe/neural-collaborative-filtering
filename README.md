@@ -6,10 +6,10 @@ The authors of NCF published [a nice implementation](https://githubcom/hexiangna
 
 
 ## Dataset
-[The Movielens Latest Datasets](https://grouplens.org/datasets/movielens/latest/) is used to test the repo.
+[The Movielens 1M Datasets](https://grouplens.org/datasets/movielens/1m/) is used to test the repo.
 
 ## Movie Poster Embeddings
-We scrape the movie poster images from IMDB website and use Resnet152 (pretrained on ImageNet) to obtain our movie poster embedding features. The correspondence movieId to imdbId is in the file links.csv. (or you can just download the embeddings with  `download.py`)
+We scrape the movie poster images from IMDB website and use Resnet152 (pretrained on ImageNet) to obtain our movie poster embedding features. The correspondence movieId to imdbId is in the file links.csv. (or you can just download the embeddings with  `download.py`)
 
 ## How to run
 - Clone this repository:
