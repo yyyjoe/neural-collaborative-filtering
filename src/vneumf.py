@@ -20,10 +20,6 @@ class VNeuMF(torch.nn.Module):
         self.embedding_user_mf = torch.nn.Embedding(num_embeddings=self.num_users, embedding_dim=self.latent_dim_mf)
         self.embedding_item_mf = torch.nn.Embedding(num_embeddings=self.num_items, embedding_dim=self.latent_dim_mf)
 
-        if(self.config['isAtten']):
-            self.embedding_atten = torch.nn.Embedding(num_embeddings=self.num_users, embedding_dim=self.latent_dim_v)
-            self.fc_atten = torch.nn.Linear(in_features=self.latent_dim_v, out_features=3)
-            self.sigmoid = torch.nn.Sigmoid()
 
         self.embedding_user_v  = torch.nn.Embedding(num_embeddings=self.num_users, embedding_dim=self.latent_dim_v)
         self.fc_embedding = torch.nn.ModuleList()
@@ -70,12 +66,6 @@ class VNeuMF(torch.nn.Module):
         for idx, _ in enumerate(range(len(self.fc_layers_v))):
             v_vector = self.fc_layers_v[idx](v_vector)
 
-        if(self.config['isAtten']):
-            atten_map = self.fc_atten(F.relu(self.embedding_atten(user_indices)))
-            atten_map = F.sigmoid(atten_map)
-            mlp_vector = mlp_vector*atten_map[:,0,None]
-            mf_vector = mf_vector*atten_map[:,1,None]
-            v_vector = v_vector*atten_map[:,2,None]
         ###
         vector = torch.cat([mlp_vector, mf_vector,v_vector], dim=-1)
         logits = self.affine_output(vector)
@@ -86,29 +76,16 @@ class VNeuMF(torch.nn.Module):
         pass
 
     def load_pretrain_weights(self):
-        """Loading weights from trained MLP model & GMF model"""
+        """Loading weights from trained GMF model"""
         config = self.config
-        config['latent_dim'] = config['latent_dim_mlp']
-        mlp_model = MLP(config)
+        neumf_model = NeuMF(config)
         if config['use_cuda'] is True:
-            mlp_model.cuda()
-        resume_checkpoint(mlp_model, model_dir=config['pretrain_mlp'], device_id=config['device_id'])
-
-        self.embedding_user_mlp.weight.data = mlp_model.embedding_user.weight.data
-        self.embedding_item_mlp.weight.data = mlp_model.embedding_item.weight.data
-        for idx in range(len(self.fc_layers)):
-            self.fc_layers[idx].weight.data = mlp_model.fc_layers[idx].weight.data
-
-        config['latent_dim'] = config['latent_dim_mf']
-        gmf_model = GMF(config)
-        if config['use_cuda'] is True:
-            gmf_model.cuda()
-        resume_checkpoint(gmf_model, model_dir=config['pretrain_mf'], device_id=config['device_id'])
-        self.embedding_user_mf.weight.data = gmf_model.embedding_user.weight.data
-        self.embedding_item_mf.weight.data = gmf_model.embedding_item.weight.data
-
-        self.affine_output.weight.data = 0.5 * torch.cat([mlp_model.affine_output.weight.data, gmf_model.affine_output.weight.data], dim=-1)
-        self.affine_output.bias.data = 0.5 * (mlp_model.affine_output.bias.data + gmf_model.affine_output.bias.data)
+            neumf_model.cuda()
+        resume_checkpoint(neumf_model, model_dir=config['pretrain_neumf'], device_id=config['device_id'])
+        self.embedding_user_mlp.weight.data = neumf_model.embedding_user_mlp.weight.data
+        self.embedding_item_mlp.weight.data = neumf_model.embedding_item_mlp.weight.data
+        self.embedding_user_mf.weight.data = neumf_model.embedding_user_mf.weight.data
+        self.embedding_item_mf.weight.data = neumf_model.embedding_item_mf.weight.data
 
 
 class VNeuMFEngine(Engine):

@@ -58,8 +58,9 @@ class VGMF(torch.nn.Module):
         if config['use_cuda'] is True:
             gmf_model.cuda()
         resume_checkpoint(gmf_model, model_dir=config['pretrain_mf'], device_id=config['device_id'])
-        self.embedding_user.weight.data = gmf_model.embedding_user.weight.data
-        self.embedding_item.weight.data = gmf_model.embedding_item.weight.data
+        self.embedding_user_mf.weight.data = gmf_model.embedding_user.weight.data
+        self.embedding_item_mf.weight.data = gmf_model.embedding_item.weight.data
+
 
 
 class VGMFEngine(Engine):
