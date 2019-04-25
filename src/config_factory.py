@@ -51,9 +51,9 @@ mlp_config = {'alias': '',
               'adam_lr': 1e-3,
               'num_users': 6040,
               'num_items': 3706,
-              'latent_dim': 8,
+              'latent_dim': 4,
               'num_negative': 4,
-              'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
+              'layers': [8,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
               'l2_regularization': 0.0000001,  # MLP model is sensitive to hyper params
               'use_cuda': True,
               'device_id': 1,
@@ -74,7 +74,7 @@ neumf_config = {'alias': '',
                 'latent_dim_mlp': 4,
                 'latent_dim': 4,
                 'num_negative': 4,
-                'layers': [16,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
+                'layers': [8,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
                 'l2_regularization': 0,
                 'use_cuda': True,
                 'device_id': 2,

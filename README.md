@@ -1,12 +1,14 @@
 # Seeing is Believing: A Movie Recommender System with PosterAugmentation
-Movie posters signal the style and content of the films. By including the visual information, the movie recommend system can better filter preferences according to user's choices. A deep learning recommend system, Neural Collaborative Filtering, obtain a great performance by using neural networks to learn user-item embedding features. The authors propose three networks, which are Generalized Matrix Factorization (GMF), Multi-Layer Perceptron (MLP), and Neural Matrix Factorization (NeuMF). This repo include visual information into the models and propose VGMF and VNeuMF. The image below is the model architechture of VNeuMF.
+Movie posters signal the style and content of the films. By including the visual information, the movie recommend system can better filter preferences according to user's choices. A deep learning recommend system, Neural Collaborative Filtering [1], obtain a great performance by using neural networks to learn user-item embedding features. The authors propose three networks, which are Generalized Matrix Factorization (GMF), Multi-Layer Perceptron (MLP), and Neural Matrix Factorization (NeuMF). This repo include visual information into the models and propose VGMF and VNeuMF. The following image is the model architechture of VNeuMF:
 
 <!-- ![](./res/figure/vgmf.jpg ) -->
 <p align="center"> 
-    <img src="./res/figure/vgmf.jpg">
+    <img src="./res/figure/vneumf.jpg">
 </p>
 
-The authors of NCF published [a nice implementation](https://github.com/hexiangnan/neural_collaborative_filtering) written in **tensorflow(keras)**, and [LaceyChen17](https://github.com/LaceyChen17/neural-collaborative-filtering) provides the implementation written in **pytorch**. This repo implement VGMF and VNeuMF model based on [LaceyChen17's code](https://github.com/LaceyChen17/neural-collaborative-filtering). Note that this is the course project of CSCE 670 Information Storage and Retrieval in Texas A&M University.
+The authors of NCF published [a nice implementation](https://github.com/hexiangnan/neural_collaborative_filtering) written in **tensorflow(keras)**, and [LaceyChen17](https://github.com/LaceyChen17/neural-collaborative-filtering) provides the implementation written in **pytorch**. This repo implement VGMF and VNeuMF model based on [LaceyChen17's code](https://github.com/LaceyChen17/neural-collaborative-filtering).
+
+> [1] He, Xiangnan, et al. "Neural collaborative filtering." Proceedings of the 26th International Conference on World Wide Web. International World Wide Web Conferences Steering Committee, 2017.
 
 ## Dataset
 [The Movielens 1M Datasets](https://grouplens.org/datasets/movielens/1m/) is used to test the repo.
