@@ -1,4 +1,4 @@
-# Seeing is Believing: A Movie Recommender System with PosterAugmentation
+# Seeing is Believing: A Movie Recommender System with Poster Augmentation
 Movie posters signal the style and content of the films. By including the visual information, the movie recommend system can better filter preferences according to user's choices. A deep learning recommend system, Neural Collaborative Filtering [1], obtain a great performance by using neural networks to learn user-item embedding features. The authors propose three networks, which are Generalized Matrix Factorization (GMF), Multi-Layer Perceptron (MLP), and Neural Matrix Factorization (NeuMF). This repo include visual information into the models and propose VGMF and VNeuMF. The following image is the model architechture of VNeuMF:
 
 <!-- ![](./res/figure/vgmf.jpg ) -->
